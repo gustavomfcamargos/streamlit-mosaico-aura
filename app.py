@@ -14,10 +14,11 @@ st.set_page_config(
 st.title("🧭 Mosaico Aura - Controle Operacional e Polígonos")
 st.markdown("Painel integrado ao QGIS classificado pela **Situação Cadastral** dos imóveis.")
 
-# CARREGAMENTO DOS DADOS REAIS DO QGIS (GeoPackage)
+# CARREGAMENTO DOS DADOS REAIS DO QGIS (GeoPackage local na mesma pasta)
 @st.cache_data(ttl=60)
 def carregar_dados_reais():
-    caminho_gpkg = r"C:\Users\User\Desktop\Gustavo\Pessoal\Mosaico Aura\Projetos\imoveis.gpkg"
+    # Caminho relativo: busca o arquivo na mesma pasta do app.py
+    caminho_gpkg = "imoveis.gpkg"
     
     try:
         # Lê a camada 'imoveis' do GeoPackage
@@ -88,7 +89,6 @@ if not gdf_imoveis.empty:
     # FUNÇÃO DE COR DINÂMICA BASEADA NA "Situação Cadastral"
     def cor_por_situacao(feature):
         situacao = feature['properties'].get('Situação Cadastral', '')
-        # Defina as cores de acordo com o status que você usa no QGIS
         if situacao == 'Em execução':
             return {'fillColor': '#3498db', 'color': '#2980b9', 'weight': 2, 'fillOpacity': 0.5} # Azul
         elif situacao == 'Vendido':
